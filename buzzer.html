@@ -1,0 +1,81 @@
+<html>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        ol#monitor-list {
+            visibility: hidden;
+        }
+        .monitor-frame {
+            position: absolute;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="monitor-frame-container"></div>
+    <ol id="monitor-list">
+        <!-- Filled in by JavaScript -->
+    </ol>
+    <script>
+        // Async wrapper necessary so we can use `await`
+        ;(async () => {
+            async function showMonitorFrames() {
+                let container = document.getElementById('monitor-frame-container')
+                const monitors = await Hudkit.getMonitorLayout()
+                // console.log(JSON.stringify(monitors, null, 2))
+                const monitorList =
+                    document.getElementById('monitor-list')
+                for (const {name, x, y, width, height} of monitors) {
+                    const item = document.createElement('li')
+                    item.textContent = `"${name}": position (${x},${y}), size ${width}×${height}`
+                    monitorList.appendChild(item)
+                }
+
+                monitors.forEach((monitor, monitorIndex) => {
+                    // Adjust here to select or exclude monitors to display on
+                    if (monitor.name != 'eDP-1z') {
+                        let monitorFrame = document.createElement('div')
+                        monitorFrame.setAttribute('class', 'monitor-frame')
+                        monitorFrame.style.left = monitor.x
+                        monitorFrame.style.top = monitor.y
+                        monitorFrame.style.width = monitor.width
+                        monitorFrame.style.height = monitor.height
+                        container.appendChild(monitorFrame)
+
+                        let labelDiv = document.createElement('div')
+                        labelDiv.style.margin = '150 auto'
+                        labelDiv.style.width = '60%'
+                        labelDiv.style.height = '340pt'
+                        labelDiv.style.background = 'white'
+
+                        let label = document.createElement('h1')
+                        label.appendChild(document.createTextNode('Yeet that shit!')) // label_text
+                        label.style['font-size'] = '80pt'
+                        label.style['text-align'] = 'center'
+                        label.style.color = 'red'
+                        labelDiv.appendChild(label)
+
+                        let ts = document.createElement('p')
+                        ts.appendChild(document.createTextNode('')) // ts_text
+                        ts.style['font-size'] = '30pt'
+                        ts.style['text-align'] = 'center'
+                        ts.style.color = 'red'
+                        labelDiv.appendChild(ts)
+                        monitorFrame.appendChild(labelDiv)
+                    }
+                })
+            }
+
+            // Show it now
+            await showMonitorFrames()
+
+            // Close and exit after so many seconds
+            await new Promise(r => setTimeout(r, 5000))
+            window.close()
+        })()
+    </script>
+</body>
+</html>
