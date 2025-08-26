@@ -2,17 +2,12 @@
 
 # Change team names as desired
 declare -A TEAM
-TEAM[A]="Yeet that shit!"
-TEAM[B]="Banana!"
+TEAM[A]="Team Emacs!"
+TEAM[B]="Team Vim!"
 
 # Sound and HUD files
-#BUZZSOUND=$HOME/buzzer.wav
-if [[ $1 == 'A' ]]; then
-  BUZZSOUND=$HOME/ff/yeet-that-shit.mp3
-else
-  BUZZSOUND=$HOME/ff/banana.mp3
-fi 
-BUZZHTML=$HOME/buzzer.html
+BUZZSOUND=$PWD/buzzer.wav
+BUZZHTML=$PWD/buzzer.html
 
 # Required team arg
 if [[ ! $1 =~ ^[AB]$ ]]; then
